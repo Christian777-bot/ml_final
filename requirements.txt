@@ -1,8 +1,12 @@
-streamlit==1.31.1
-pandas==1.5.3
-numpy==1.23.5
-scikit-learn==1.2.2
-xgboost==1.7.6
-joblib==1.3.2
-matplotlib==3.7.2
-seaborn==0.12.2
+# Pustaka utama aplikasi Streamlit
+streamlit>=1.36.0 
+
+# Pustaka pemrosesan data (digunakan di model.py)
+pandas>=2.2.2 
+
+# Pustaka Model/Scaler (Wajib menggunakan versi yang SAMA PERSIS)
+numpy==2.1.3
+joblib==1.4.2
+scikit-learn==1.6.1
+xgboost==3.1.2
+
