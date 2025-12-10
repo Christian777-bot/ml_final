@@ -91,13 +91,28 @@ Weight_Group = weight_group_value(Weight)
 
 # =====================================================
 # SUSUN FEATURE DALAM URUTAN YANG SAMA SEPERTI TRAINING
+# --- PENTING: Urutan ini harus terdiri dari 18 fitur dan HARUS SAMA
+# --- dengan urutan kolom di X_train pada model.py
+# --- Urutan yang Ditemukan di model.py:
+# --- [Gender, Age, Height, Weight, FAVC, FCVC, NCP, CAEC, SMOKE, CH2O, SCC, FAF, TUE, CALC, MTRANS, family_history, Age_Group, Weight_Group]
 # =====================================================
 input_data = np.array([[
+    # 1. Numerik/Biner Awal
     Gender, Age, Height, Weight,
-    family_history, FAVC, FCVC, CAEC, SMOKE,
+    # 2. Fitur Gaya Hidup (FAVC, FCVC, NCP BARU DITAMBAHKAN DI SINI)
+    FAVC, FCVC, NCP, 
+    # 3. Fitur Gaya Hidup Lanjutan (CAEC, SMOKE, CH2O, SCC, FAF, TUE, CALC, MTRANS)
+    CAEC, SMOKE,
     CH2O, SCC, FAF, TUE, CALC, MTRANS,
+    # 4. Fitur Akhir (family_history, Age_Group, Weight_Group)
+    family_history,
     Age_Group, Weight_Group
 ]])
+
+# Cek jumlah fitur (Opsional, tapi membantu debug)
+if input_data.shape[1] != 18:
+    st.error(f"Error: Jumlah fitur yang diberikan ({input_data.shape[1]}) tidak sama dengan jumlah fitur pelatihan (18).")
+    st.stop() # Hentikan eksekusi jika jumlah fitur salah
 
 # Scaling untuk XGBoost
 input_scaled = scaler.transform(input_data)
@@ -117,6 +132,7 @@ label_map = {
 # BUTTON PREDICT
 # =====================================================
 if st.button("Predict Obesity Level"):
+    # Pastikan data memiliki 1 baris
     pred = xgb_model.predict(input_scaled)[0]
     st.subheader("Prediction Result")
     st.metric("Obesity Level", label_map[pred])
